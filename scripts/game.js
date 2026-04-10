@@ -1,4 +1,4 @@
-//Board: 4x4 cards
+//Board: 4x4 cards :)
 
 for (i=0; i<16; i++) {
     let div = document.createElement("div");
