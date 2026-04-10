@@ -1,0 +1,14 @@
+@font-face {
+    font-family: rubik;
+    src: url(../fonts/Rubik_Distressed/RubikDistressed-Regular.ttf);
+}
+
+@font-face {
+    font-family: kablammo;
+    src: url(../fonts/Kablammo/Kablammo-Regular-VariableFont_MORF.ttf);
+}
+
+@font-face {
+    font-family: league;
+    src: url(../fonts/League_Spartan/LeagueSpartan-VariableFont_wght.ttf);
+}
