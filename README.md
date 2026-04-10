@@ -3,6 +3,5 @@
 
 My attepmt at creating a La Loteria style game
 
-Inspiration: Google La Loteria: 
+Inspiration: [Google La Loteria](https://doodles.google/doodle/celebrating-loteria/)
 
-[Link](https://doodles.google/doodle/celebrating-loteria/)
