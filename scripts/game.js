@@ -9,5 +9,6 @@ for (i=0; i<16; i++) {
     div.querySelector("img").style.height = "100%";
     div.querySelector("img").style.width = "100%";
     div.querySelector("img").style.objectFit = "cover";
+    div.style.border = "1px solid black";
     document.querySelector("#board").appendChild(div);
 }
