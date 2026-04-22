@@ -68,5 +68,7 @@ const loteria = {
         return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     },
 
-    winBy: ["row", "any corner", "diagonal", "column", "all right", "all left", "around", "middle"]
+    random: () => {
+        return loteria.cards[Math.floor(Math.random() * loteria.cards.length)];
+    }
 }

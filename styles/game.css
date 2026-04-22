@@ -1,11 +1,39 @@
 #board {
-    max-width: 800px;
+    max-width: 300px;
     margin: auto;
     border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
 
-#game {
+#board .card {
+    height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    position: relative;
+}
 
+#board .card img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#board .card:hover {
+    cursor: pointer;
+}
+
+#game {
+    display: none;
+    text-align: center;
+    padding: 20px 0px;
+}
+
+.marked {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
 }
