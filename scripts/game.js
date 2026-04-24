@@ -33,6 +33,7 @@ const game = {
     drawn: [],
     
     empty: () => {
+        game.stop();
         game.board.innerHTML = "";
         game.currentCard.textContent = "...";
         game.timer.textContent = "...";
@@ -64,6 +65,8 @@ const game = {
 
     hand: [],
 
+    interval: null,
+
     mark: (card) => {
         let drawn = game.drawn.find((x) => x.id === card.cardId);
         if (!drawn) return "Card not drawn!";
@@ -73,7 +76,8 @@ const game = {
     },
 
     restart: () => {
-        //To do
+        game.empty();
+        game.start();
     },
 
     start: () => {
@@ -93,9 +97,13 @@ const game = {
             document.querySelector("#board").appendChild(div);
             div.addEventListener("click", () => {
                 game.mark(div);
-                console.log(game.hand.find((x) => x.id === div.cardId).position);
             })
         }
+        //game.interval = setInterval(drawCard, 10000);
+    },
+
+    stop: () => {
+        clearInterval(game.interval);
     },
 
     timer: document.querySelector("#timer"),
@@ -161,4 +169,5 @@ const page = {
 }
 
 buttons.back.addEventListener("click", game.back);
+buttons.restart.addEventListener("click", game.restart);
 buttons.start.addEventListener("click", game.start);
