@@ -4,6 +4,8 @@ const buttons = {
 
     howToPlay: document.querySelector("#how-to-play"),
 
+    loteria: document.querySelector("#loteria"),
+
     restart: document.querySelector("#restart"),
 
     start: document.querySelector("#start")
@@ -15,6 +17,7 @@ const game = {
         page.hide(page.game);
         page.show(page.start, "flex");
         game.empty();
+        game.stop();
     },
 
     board: document.querySelector("#board"),
@@ -26,9 +29,17 @@ const game = {
 
         let card = loteria.random();
         let drawn = game.drawn.find((x) => x.id === card.id);
-        if (drawn) game.drawCard();
+        if (drawn) {
+            game.drawCard();
+            return;
+        }
         else game.drawn.push(card);
+        
+        game.timerTime = 4000;
+        game.currentCard.textContent = card.name;
     },
+
+    drawInterval: null,
 
     drawn: [],
     
@@ -65,7 +76,42 @@ const game = {
 
     hand: [],
 
-    interval: null,
+    loteria: () => {
+        let winCon = game.wins.find((x) => x.name === game.winCon);
+        let marked = game.hand.filter((x) => x.marked);
+        let positions = marked.map((x) => x.position);
+        let winConPContent = game.winConP.textContent;
+
+        let broke = false;
+        let won = false;
+        
+        for (let posArr of winCon.positions) {
+            broke = false;
+            for (let pos of posArr) {
+                if (!positions.includes(pos)) {
+                    broke = true;
+                    break;
+                }
+            }
+            if (broke) continue;
+            else {
+                won = true;
+                break;
+            }
+        }
+
+        if (won) {
+            game.stop();
+            game.winConP.textContent = "Congratulations! You got LOTERIA!";
+            game.timer.textContent = "...";
+            game.currentCard.textContent = "...";
+        } else {
+            game.winConP.textContent = "You do not have the correct combination to win!";
+            setTimeout(() => {
+                game.winConP.textContent = winConPContent;
+            }, 2000);
+        }
+    }, 
 
     mark: (card) => {
         let drawn = game.drawn.find((x) => x.id === card.cardId);
@@ -76,6 +122,9 @@ const game = {
     },
 
     restart: () => {
+        game.winConP.textContent = "...";
+        game.timer.textContent = "...";
+        game.currentCard.textContent = "...";
         game.empty();
         game.start();
     },
@@ -86,6 +135,7 @@ const game = {
         page.show(page.game, "block");
         game.getHand();
         game.getWinCon();
+        game.winConP.textContent = "How to win: " + game.winCon;
         for (let card of game.hand) {
             let div = document.createElement("div");
             div.classList.add("card");
@@ -99,14 +149,36 @@ const game = {
                 game.mark(div);
             })
         }
-        //game.interval = setInterval(drawCard, 10000);
+
+        game.drawCard();
+        game.timer.textContent = game.timerTime / 1000;
+        game.timerInterval = setInterval(() => {
+            game.timerTime -= 1000;
+            game.timer.textContent = game.timerTime / 1000;
+        }, 1000);
+            
+        game.drawInterval = setInterval(() => {
+            game.drawCard();
+
+            clearInterval(game.timerInterval);
+            game.timerInterval = setInterval(() => {
+                game.timerTime -= 1000;
+                game.timer.textContent = game.timerTime / 1000;
+            }, 1000);
+            game.timer.textContent = game.timerTime / 1000;
+        }, 5000);
     },
 
     stop: () => {
-        clearInterval(game.interval);
+        clearInterval(game.drawInterval);
+        clearInterval(game.timerInterval);
     },
 
     timer: document.querySelector("#timer"),
+
+    timerInterval: null,
+
+    timerTime: 0,
 
     winCon: "",
 
@@ -169,5 +241,13 @@ const page = {
 }
 
 buttons.back.addEventListener("click", game.back);
+buttons.loteria.addEventListener("mouseenter", () => {
+    let colors = ["crimson", "yellowgreen", "dodgerblue"];
+    buttons.loteria.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+});
+buttons.loteria.addEventListener("mouseleave", () => {
+    buttons.loteria.style.backgroundColor = "goldenrod";
+});
+buttons.loteria.addEventListener("click", game.loteria);
 buttons.restart.addEventListener("click", game.restart);
 buttons.start.addEventListener("click", game.start);
